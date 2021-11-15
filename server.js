@@ -39,6 +39,7 @@ app.post('/api/new-employee', ({ body }, res) => {
     });
 });
 
+// See all employees
 app.get('/api/employees', (req, res) => {
     const sql = `SELECT id, employee_name AS employee_name FROM employees`;
     
@@ -53,3 +54,14 @@ app.get('/api/employees', (req, res) => {
       });
     });
   });
+
+
+// Default response for any other request (Not Found)
+app.use((req, res) => {
+    res.status(404).end();
+});
+  
+app.listen(PORT, () => {
+console.log(`Server running on port ${PORT}`);
+});
+  
