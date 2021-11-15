@@ -17,12 +17,12 @@ CREATE TABLE roles (
   REFERENCES departments(id)
 );
 
-CREATE TABLE employees (
+CREATE TABLE employee (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  first_name VARCHAR(100) NOT NULL,
-  last_name VARCHAR(100) NOT NULL,
-  role_id INT,
+  first_name VARCHAR(30) NOT NULL,
+  last_name VARCHAR(30) NOT NULL,
   manager_id INT,
+  role_id INT,
   FOREIGN KEY (role_id)
   REFERENCES roles(id)
 );
