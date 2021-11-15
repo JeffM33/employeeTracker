@@ -4,6 +4,7 @@ const mysql = require('mysql2');
 const PORT = process.env.PORT || 3001;
 const app = express();
 
+// middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
@@ -17,5 +18,38 @@ const db = mysql.createConnection(
       password: '',
       database: 'employees_db'
     },
-    console.log(`Connected to the movies_db database.`)
-  );
+    console.log(`Connected to the employees_db database.`)
+);
+
+// Create a new employee
+app.post('/api/new-employee', ({ body }, res) => {
+    const sql = `INSERT INTO employee (employee_name)
+      VALUES (?)`;
+    const params = [body.employee_name];
+    
+    db.query(sql, params, (err, result) => {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+      res.json({
+        message: 'success',
+        data: body
+      });
+    });
+});
+
+app.get('/api/employees', (req, res) => {
+    const sql = `SELECT id, employee_name AS employee_name FROM employees`;
+    
+    db.query(sql, (err, rows) => {
+      if (err) {
+        res.status(500).json({ error: err.message });
+         return;
+      }
+      res.json({
+        message: 'success',
+        data: rows
+      });
+    });
+  });
