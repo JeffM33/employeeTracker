@@ -102,6 +102,118 @@ async function init() {
         });
     }
 
+    function addDepartment() {
+        console.log('Adding new department');
+        inquirer.prompt([
+            {
+                type: 'input',
+                name: 'departments',
+                message: `Department's name?`
+            }
+        ])
+        .then(function (answers) {
+            const sql = 'INSERT INTO departments (departmentName) VALUES ( ? )';
+
+            db.query(sql, answers.departments, function (err,res){
+                if (err) throw err;
+            }) 
+            menu();
+        });
+        
+    };
+
+    function addRole() {
+        console.log('Adding new role');
+        inquirer.prompt([
+            {
+                type: 'input',
+                name: 'title',
+                message: `What is the title of the new role?`
+            },
+            {
+                type: 'input',
+                name: 'salary',
+                message: `How much do you make in this new role?`
+            },
+            {
+                type: 'input',
+                name: 'departmentId',
+                message: `Which department is this role associated with?`
+            },
+            
+        ])
+        .then(function (answers) {
+            const sql = 'INSERT INTO roles SET ?';
+
+            db.query(sql, 
+                {
+                    title: answers.title,
+                    salary: answers.salary, 
+                    department_id: answers.departmentId
+                },
+                function (err, res) {
+                    if (err) throw err;
+                })
+            menu();
+        }); 
+    };
+
+    function addEmp(){
+        inquirer
+          .prompt([
+            {
+              type: 'input',
+              name: 'firstName',
+              message: `New employee's first name?`
+            },
+            {
+              type: 'input', 
+              name: 'lastName',
+              message: `New employee's last name?`
+            },
+            {
+              type: 'list',
+              message: `Enter the new employee role`,
+              choices: [
+                  { name: 'Salesperson ', value: 1},
+                  { name: 'Software Engineer', value: 2},
+                  { name: 'Account Manager', value: 3},
+                  { name: 'Accountant ', value: 4},
+                  { name: 'Legal Team Lead', value: 5},
+                  { name: 'Lawyer', value: 6},
+              ],
+              name: 'role_id'
+            },
+            // {
+            //     type: 'list',
+            //     message: `Enter the new employee's Manager`,
+            //     choices: [
+            //         { name: 'Jeff McLeod ', value: 1},
+            //         { name: 'Ramee       El Ramen', value: 2},
+            //         { name: 'Bobby       Carter', value: 3},
+            //         { name: 'Yuno        Sykk ', value: 4},
+            //         { name: 'Abby        Heartfelt ', value: 5},
+            //         { name: 'Randy       Bullet ', value: 7},
+            //     ],
+            //     name: 'role_id'
+            //   },
+          ])
+        .then(function (answer) {
+          const sql = "INSERT INTO employee SET ?";
+        
+          db.query(sql, 
+           {
+            first_name: answer.firstName,
+            last_name: answer.lastName,
+            role_id: answer.roleId,
+          }, 
+            function (err, res) {
+             if (err) throw err;
+           })
+           menu();
+        })
+      }
+
 }
 
 
