@@ -67,7 +67,33 @@ async function init() {
     function viewDepartments() {
         console.log('Viewing Departments');
 
-        const sql = `SELECT * FROM departments`
+        const sql = `SELECT id, departmentName AS Departments FROM departments`
+
+        db.query(sql, (error, res) => {
+            if (error) throw error;
+            console.table(res);
+            menu();
+        });
+    }
+
+    function viewRoles() {
+        console.log('Viewing Roles');
+
+        const sql = `SELECT roles.id, title, departmentName AS Departments, salary FROM departments JOIN roles ON departments.id = roles.department_id`
+
+        db.query(sql, (error, res) => {
+            if (error) throw error;
+            console.table(res);
+            menu();
+        });
+    }
+
+    function viewEmp() {
+        console.log('Viewing Employees');
+
+        const sql = `SELECT employee.id AS ID, first_name, last_name, title, departmentName AS Departments, salary, manager_id AS Manager_Employee_ID
+        FROM employee INNER JOIN roles ON employee.role_id = roles.id
+        INNER JOIN departments ON roles.department_id = departments.id`
 
         db.query(sql, (error, res) => {
             if (error) throw error;
